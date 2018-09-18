@@ -118,10 +118,8 @@ fun accountInThreeYears(initial: Int, percent: Int): Double = initial*(sqr(1+per
  * Пользователь задает целое трехзначное число (например, 478).
  * Необходимо вывести число, полученное из заданного перестановкой цифр в обратном порядке (например, 874).
  */
-fun numberRevert(number: Int): Int = a*number%10*100+b*number/10%10*10+c*number/100%10
-var a: Int = 1
-var b: Int = 1
-var c: Int = 1
+fun numberRevert(number: Int): Int = number%10*100+number/10%10*10+number/100%10
+
 
 
 
