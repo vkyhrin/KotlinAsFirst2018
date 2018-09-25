@@ -96,7 +96,14 @@ else ((t1 * v1 + t2 * v2 + t3 * v3) / 2 - t1 * v1 - t2 * v2) / v3
      */
     fun whichRookThreatens(kingX: Int, kingY: Int,
                            rookX1: Int, rookY1: Int,
-                           rookX2: Int, rookY2: Int): Int = TODO()
+                           rookX2: Int, rookY2: Int): Int =
+            when {
+                (((kingX == rookX1) || (kingY == rookY1)) && ((kingX != rookX2) && (kingY != rookY2))) -> 1
+                (((kingX == rookX2) || (kingY == rookY2)) && ((kingX != rookX1) && (kingY != rookY1))) -> 2
+                (((kingX == rookX1) || (kingY == rookY1)) && ((kingX == rookX2) || (kingY == rookY2))) -> 3
+                else -> 0
+
+            }
 
     /**
      * Простая
