@@ -1,9 +1,13 @@
 @file:Suppress("UNUSED_PARAMETER")
+
 package lesson2.task1
 
 import com.sun.deploy.ref.CodeRef
 import lesson1.task1.discriminant
+import lesson1.task1.sqr
+import kotlin.math.abs
 import kotlin.math.max
+import kotlin.math.min
 import kotlin.math.sqrt
 
 /**
@@ -64,13 +68,15 @@ fun minBiRoot(a: Double, b: Double, c: Double): Double {
  * вернуть строку вида: «21 год», «32 года», «12 лет».
  */
 fun ageDescription(age: Int): String =
-        when{
+        when {
             age % 100 in 5..20 -> "$age лет"
             age % 10 > 4 -> "$age лет"
+            age % 10 == 0 -> "$age лет"
             age % 10 == 1 -> "$age год"
             age % 10 in 2..4 -> "$age года"
             else -> "0"
         }
+
 /**
  * Простая
  *
@@ -88,58 +94,75 @@ fun timeForHalfWay(t1: Double, v1: Double,
 }
 
 
+/**
+ * Простая
+ *
+ * Нa шахматной доске стоят черный король и две белые ладьи (ладья бьет по горизонтали и вертикали).
+ * Определить, не находится ли король под боем, а если есть угроза, то от кого именно.
+ * Вернуть 0, если угрозы нет, 1, если угроза только от первой ладьи, 2, если только от второй ладьи,
+ * и 3, если угроза от обеих ладей.
+ * Считать, что ладьи не могут загораживать друг друга
+ */
+fun whichRookThreatens(kingX: Int, kingY: Int,
+                       rookX1: Int, rookY1: Int,
+                       rookX2: Int, rookY2: Int): Int =
+        when {
+            (((kingX == rookX1) || (kingY == rookY1)) && ((kingX != rookX2) && (kingY != rookY2))) -> 1
+            (((kingX == rookX2) || (kingY == rookY2)) && ((kingX != rookX1) && (kingY != rookY1))) -> 2
+            (((kingX == rookX1) || (kingY == rookY1)) && ((kingX == rookX2) || (kingY == rookY2))) -> 3
+            else -> 0
 
-    /**
-     * Простая
-     *
-     * Нa шахматной доске стоят черный король и две белые ладьи (ладья бьет по горизонтали и вертикали).
-     * Определить, не находится ли король под боем, а если есть угроза, то от кого именно.
-     * Вернуть 0, если угрозы нет, 1, если угроза только от первой ладьи, 2, если только от второй ладьи,
-     * и 3, если угроза от обеих ладей.
-     * Считать, что ладьи не могут загораживать друг друга
-     */
-    fun whichRookThreatens(kingX: Int, kingY: Int,
-                           rookX1: Int, rookY1: Int,
-                           rookX2: Int, rookY2: Int): Int =
-            when {
-                (((kingX == rookX1) || (kingY == rookY1)) && ((kingX != rookX2) && (kingY != rookY2))) -> 1
-                (((kingX == rookX2) || (kingY == rookY2)) && ((kingX != rookX1) && (kingY != rookY1))) -> 2
-                (((kingX == rookX1) || (kingY == rookY1)) && ((kingX == rookX2) || (kingY == rookY2))) -> 3
-                else -> 0
+        }
 
-            }
+/**
+ * Простая
+ *
+ * На шахматной доске стоят черный король и белые ладья и слон
+ * (ладья бьет по горизонтали и вертикали, слон — по диагоналям).
+ * Проверить, есть ли угроза королю и если есть, то от кого именно.
+ * Вернуть 0, если угрозы нет, 1, если угроза только от ладьи, 2, если только от слона,
+ * и 3, если угроза есть и от ладьи и от слона.
+ * Считать, что ладья и слон не могут загораживать друг друга.
+ */
+fun rookOrBishopThreatens(kingX: Int, kingY: Int,
+                          rookX: Int, rookY: Int,
+                          bishopX: Int, bishopY: Int): Int =
+        when {
+            (((rookX != kingX) && (rookY != kingY)) && (abs(bishopX - kingX) != abs(bishopY - kingY))) -> 0
+            (((rookX == kingX) || (rookY == kingY)) && (abs(bishopX - kingX) != abs(bishopY - kingY))) -> 1
+            (((rookX != kingX) && (rookY != kingY)) && (abs(bishopX - kingX) == abs(bishopY - kingY))) -> 2
+            else -> 3
 
-    /**
-     * Простая
-     *
-     * На шахматной доске стоят черный король и белые ладья и слон
-     * (ладья бьет по горизонтали и вертикали, слон — по диагоналям).
-     * Проверить, есть ли угроза королю и если есть, то от кого именно.
-     * Вернуть 0, если угрозы нет, 1, если угроза только от ладьи, 2, если только от слона,
-     * и 3, если угроза есть и от ладьи и от слона.
-     * Считать, что ладья и слон не могут загораживать друг друга.
-     */
-    fun rookOrBishopThreatens(kingX: Int, kingY: Int,
-                              rookX: Int, rookY: Int,
-                              bishopX: Int, bishopY: Int): Int = TODO()
 
-    /**
-     * Простая
-     *
-     * Треугольник задан длинами своих сторон a, b, c.
-     * Проверить, является ли данный треугольник остроугольным (вернуть 0),
-     * прямоугольным (вернуть 1) или тупоугольным (вернуть 2).
-     * Если такой треугольник не существует, вернуть -1.
-     */
-    fun triangleKind(a: Double, b: Double, c: Double): Int = TODO()
+        }
 
-    /**
-     * Средняя
-     *
-     * Даны четыре точки на одной прямой: A, B, C и D.
-     * Координаты точек a, b, c, d соответственно, b >= a, d >= c.
-     * Найти длину пересечения отрезков AB и CD.
-     * Если пересечения нет, вернуть -1.
-     */
-    fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int = TODO()
+/**
+ * Простая
+ *
+ * Треугольник задан длинами своих сторон a, b, c.
+ * Проверить, является ли данный треугольник остроугольным (вернуть 0),
+ * прямоугольным (вернуть 1) или тупоугольным (вернуть 2).
+ * Если такой треугольник не существует, вернуть -1.
+ */
+fun triangleKind(a: Double, b: Double, c: Double): Int {
+    val minimal = min(min(a, b), c)
+    val maximum = max(max(a, b), c)
+    val middle = a + b + c - maximum - minimal
+    return when {
+        minimal + middle <= maximum -> -1
+        maximum == sqrt(sqr(minimal) + sqr(middle)) -> 1
+        maximum < sqrt(sqr(minimal) + sqr(middle)) -> 0
+        else -> 2
+    }
+}
+
+/**
+ * Средняя
+ *
+ * Даны четыре точки на одной прямой: A, B, C и D.
+ * Координаты точек a, b, c, d соответственно, b >= a, d >= c.
+ * Найти длину пересечения отрезков AB и CD.
+ * Если пересечения нет, вернуть -1.
+ */
+fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int = TODO()
 
