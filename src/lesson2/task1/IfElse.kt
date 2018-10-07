@@ -72,9 +72,8 @@ fun ageDescription(age: Int): String =
             age % 100 in 5..20 -> "$age лет"
             age % 10 > 4 -> "$age лет"
             age % 10 == 0 -> "$age лет"
-            age % 10 == 1 -> "$age год"
             age % 10 in 2..4 -> "$age года"
-            else -> "0"
+            else -> "$age год"
         }
 
 /**
@@ -164,5 +163,13 @@ fun triangleKind(a: Double, b: Double, c: Double): Int {
  * Найти длину пересечения отрезков AB и CD.
  * Если пересечения нет, вернуть -1.
  */
-fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int = TODO()
+fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int = when {
+    (a >= c) && (d >= b) -> b - a
+    (b >= d) && (c >= a) -> d - c
+    (b >= d) && (a <= d) -> d - a
+    (b <= d) && (c <= b) -> b - c
+    (b <= d) && (b == c) -> 0
+    (b >= d) && (a == d) -> 0
+    else -> -1
+}
 
