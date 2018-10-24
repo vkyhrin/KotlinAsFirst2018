@@ -2,6 +2,7 @@
 
 package lesson3.task1
 
+import lesson1.task1.sqr
 import kotlin.math.floor
 import kotlin.math.max
 import kotlin.math.min
@@ -76,7 +77,7 @@ fun digitNumber(n: Int): Int {
     do {
         m /= 10
         k++
-    } while (m > 0)
+    } while (m != 0)
     return k
 }
 
@@ -119,9 +120,9 @@ fun lcm(m: Int, n: Int): Int {
  * Для заданного числа n > 1 найти минимальный делитель, превышающий 1
  */
 fun minDivisor(n: Int): Int {
-    var del = 2
-    while (n % del != 0) del++
-    return del
+    var d = 2
+    while ((n % d != 0) && (d <= n)) d++
+    return d
 }
 
 /**
@@ -130,9 +131,9 @@ fun minDivisor(n: Int): Int {
  * Для заданного числа n > 1 найти максимальный делитель, меньший n
  */
 fun maxDivisor(n: Int): Int {
-    var del = n - 1
-    while (n % del != 0) del--
-    return del
+    var d = n - 1
+    while ((n % d != 0) && (d <= n)) d--
+    return d
 }
 
 /**
@@ -148,10 +149,7 @@ fun isCoPrime(m: Int, n: Int): Boolean {
     while (a != b) {
         if (a > b) a -= b else b -= a
     }
-    return if (a == 1) true
-    else {
-        return false
-    }
+    return (a == 1)
 }
 
 
@@ -263,7 +261,17 @@ fun hasDifferentDigits(n: Int): Boolean {
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun squareSequenceDigit(n: Int): Int = TODO()
+fun squareSequenceDigit(n: Int): Int {
+    var k = 0
+    var a = 1
+    var b = 0
+    while (b < n) {
+        k++
+        b += digitNumber(sqr(k))
+    }
+    for (i in 1..b - n) a *= 10
+    return sqr(k) / a % 10
+}
 
 /**
  * Сложная
