@@ -1,4 +1,4 @@
-@file:Suppress("UNUSED_PARAMETER")
+@file:Suppress("UNUSED_PARAMETER", "NAME_SHADOWING")
 
 package lesson3.task1
 
@@ -117,8 +117,10 @@ fun lcm(m: Int, n: Int): Int {
  * Для заданного числа n > 1 найти минимальный делитель, превышающий 1
  */
 fun minDivisor(n: Int): Int {
+    val a = sqrt(n.toDouble()).toInt()
     var d = 2
-    while ((n % d != 0) && (d <= n)) d++
+    if (isPrime(n)) return n
+    while ((n % d != 0) && (d <= a)) d++
     return d
 }
 
@@ -128,9 +130,11 @@ fun minDivisor(n: Int): Int {
  * Для заданного числа n > 1 найти максимальный делитель, меньший n
  */
 fun maxDivisor(n: Int): Int {
-    var d = n - 1
-    while ((n % d != 0) && (d <= n)) d--
-    return d
+    val a = sqrt(n.toDouble()).toInt()
+    var d = 2
+    if (isPrime(n)) return n / n
+    while ((n % d != 0) && (d <= a)) d++
+    return n / d
 }
 
 /**
@@ -194,9 +198,15 @@ fun collatzSteps(x: Int): Int {
  */
 fun sin(x: Double, eps: Double): Double {
     val q = x % (2.0 * PI)
-    var w = q
-    var e = q
-    var i = 1.0
+    val i = 1.0
+    return sc(q, q, q, i, eps)
+}
+
+fun sc(q: Double, w: Double, e: Double, i: Double, eps: Double): Double {
+    val q = q
+    var w = w
+    var e = e
+    var i = i
     while (true) {
         w = -w * sqr(q) / (i + 1.0) / (i + 2.0)
         if (abs(w) < eps) break
@@ -215,16 +225,10 @@ fun sin(x: Double, eps: Double): Double {
  */
 fun cos(x: Double, eps: Double): Double {
     val q = x % (2.0 * PI)
-    var w = 1.0
-    var e = 1.0
-    var i = 0.0
-    while (true) {
-        w = -w * sqr(q) / (i + 1.0) / (i + 2.0)
-        if (abs(w) < eps) break
-        e += w
-        i += 2.0
-    }
-    return e
+    val w = 1.0
+    val e = 1.0
+    val i = 0.0
+    return sc(q, w, e, i, eps)
 }
 
 /**
@@ -309,13 +313,7 @@ fun fibSequenceDigit(n: Int): Int {
     var k = 0
     do {
         k++
-        var ex = fib(k)
-        var c = 0
-        do {
-            c++
-            ex /= 10
-        } while (ex > 0)
-        a += c
+        a += digitNumber(fib(k))
     } while (a < n)
     b = fib(k)
     for (i in 1..a - n) {

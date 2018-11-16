@@ -133,12 +133,10 @@ fun abs(v: List<Double>): Double {
 fun mean(list: List<Double>): Double {
     if (list.isEmpty()) return 0.0
     var s = 0.0
-    var all = 0.0
     for (element in list) {
         s += element
-        all++
     }
-    return s / all
+    return s / list.size
 }
 
 /**
@@ -177,7 +175,6 @@ fun times(a: List<Double>, b: List<Double>): Double {
  * Значение пустого многочлена равно 0.0 при любом x.
  */
 fun polynom(p: List<Double>, x: Double): Double {
-    if (p.isEmpty()) return 0.0
     var sum = 0.0
     var a = 1.0
     for (i in 0 until p.size) {
@@ -217,11 +214,12 @@ fun accumulate(list: MutableList<Double>): MutableList<Double> {
 fun factorize(n: Int): List<Int> {
     val mut = mutableListOf<Int>()
     var a = n
+
     while (a > 1) {
         mut.add(minDivisor(a))
         a /= minDivisor(a)
     }
-return mut
+    return mut
 }
 
 /**
