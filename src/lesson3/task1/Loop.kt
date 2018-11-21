@@ -117,10 +117,9 @@ fun lcm(m: Int, n: Int): Int {
  * Для заданного числа n > 1 найти минимальный делитель, превышающий 1
  */
 fun minDivisor(n: Int): Int {
-    val a = sqrt(n.toDouble()).toInt()
     var d = 2
     if (isPrime(n)) return n
-    while ((n % d != 0) && (d <= a)) d++
+    while ((n % d != 0) && (d <= n)) d++
     return d
 }
 
@@ -130,11 +129,10 @@ fun minDivisor(n: Int): Int {
  * Для заданного числа n > 1 найти максимальный делитель, меньший n
  */
 fun maxDivisor(n: Int): Int {
-    val a = sqrt(n.toDouble()).toInt()
-    var d = 2
+    var d = n - 1
     if (isPrime(n)) return n / n
-    while ((n % d != 0) && (d <= a)) d++
-    return n / d
+    while (n % d != 0) d--
+    return d
 }
 
 /**
@@ -197,23 +195,22 @@ fun collatzSteps(x: Int): Int {
  * Нужную точность считать достигнутой, если очередной член ряда меньше eps по модулю
  */
 fun sin(x: Double, eps: Double): Double {
-    val q = x % (2.0 * PI)
+    val function = x % (2.0 * PI)
     val i = 1.0
-    return sc(q, q, q, i, eps)
+    return sc(function, function, function, i, eps)
 }
 
-fun sc(q: Double, w: Double, e: Double, i: Double, eps: Double): Double {
-    val q = q
-    var w = w
-    var e = e
+fun sc(function: Double, number: Double, res: Double, i: Double, eps: Double): Double {
+    var number = number
+    var res = res
     var i = i
     while (true) {
-        w = -w * sqr(q) / (i + 1.0) / (i + 2.0)
-        if (abs(w) < eps) break
-        e += w
+        number = -number * sqr(function) / (i + 1.0) / (i + 2.0)
+        if (abs(number) < eps) break
+        res += number
         i += 2.0
     }
-    return e
+    return res
 }
 
 /**
@@ -225,10 +222,10 @@ fun sc(q: Double, w: Double, e: Double, i: Double, eps: Double): Double {
  */
 fun cos(x: Double, eps: Double): Double {
     val q = x % (2.0 * PI)
-    val w = 1.0
-    val e = 1.0
+    val number = 1.0
+    val res = 1.0
     val i = 0.0
-    return sc(q, w, e, i, eps)
+    return sc(q, number, res, i, eps)
 }
 
 /**
