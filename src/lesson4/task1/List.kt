@@ -214,8 +214,9 @@ fun accumulate(list: MutableList<Double>): MutableList<Double> {
 fun factorize(n: Int): List<Int> {
     val mut = mutableListOf<Int>()
     var a = n
-    while (a > 1) {
-        val b = minDivisor(a)
+    var b = minDivisor(a)
+    while (a >= b) {
+        while (a % b != 0) b++
         mut.add(b)
         a /= b
     }
@@ -239,14 +240,13 @@ fun factorizeToString(n: Int): String = factorize(n).joinToString(separator = "*
  * например: n = 100, base = 4 -> (1, 2, 1, 0) или n = 250, base = 14 -> (1, 3, 12)
  */
 fun convert(n: Int, base: Int): List<Int> {
-    if (n in 0..1) return listOf(n)
     val mut = mutableListOf<Int>()
     var a = n
     do {
-        mut.add(0, a % base)
+        mut.add(a % base)
         a /= base
     } while (a != 0)
-    return mut
+    return mut.reversed()
 }
 
 /**
@@ -259,11 +259,10 @@ fun convert(n: Int, base: Int): List<Int> {
  */
 fun convertToString(n: Int, base: Int): String {
     val num = convert(n, base)
-    val alp = "abcdefghijklmnopqrstuvwxyz"
     val res = StringBuilder()
     for (element in num) {
         if (element <= 9) res.append(element.toString())
-        else res.append(alp[element - 10].toString())
+        else res.append(('a' + element - 10).toString())
     }
     return res.toString()
 }
