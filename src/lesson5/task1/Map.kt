@@ -94,7 +94,15 @@ fun buildWordSet(text: List<String>): MutableSet<String> {
  *     mapOf("Emergency" to "911", "Police" to "02")
  *   ) -> mapOf("Emergency" to "112, 911", "Police" to "02")
  */
-fun mergePhoneBooks(mapA: Map<String, String>, mapB: Map<String, String>): Map<String, String> = TODO()
+fun mergePhoneBooks(mapA: Map<String, String>, mapB: Map<String, String>): Map<String, String> {
+    val res = mapA.toMutableMap()
+    for ((key, value) in mapB) {
+        if (mapA[key] != null && mapA[key] != value)
+            res[key] = "${mapA[key]}, $value"
+        else res[key] = value
+    }
+    return res
+}
 
 /**
  * Простая
@@ -106,7 +114,17 @@ fun mergePhoneBooks(mapA: Map<String, String>, mapB: Map<String, String>): Map<S
  *   buildGrades(mapOf("Марат" to 3, "Семён" to 5, "Михаил" to 5))
  *     -> mapOf(5 to listOf("Семён", "Михаил"), 3 to listOf("Марат"))
  */
-fun buildGrades(grades: Map<String, Int>): Map<Int, List<String>> = TODO()
+fun buildGrades(grades: Map<String, Int>): Map<Int, List<String>> {
+    val res = mutableMapOf<Int, MutableList<String>>()
+    for ((key, value) in grades) {
+        res.getOrPut(value, ::mutableListOf).add(key)
+    }
+    for ((key) in res) {
+        res[key]?.sortDescending()
+    }
+    return res
+}
+
 
 /**
  * Простая
@@ -118,7 +136,12 @@ fun buildGrades(grades: Map<String, Int>): Map<Int, List<String>> = TODO()
  *   containsIn(mapOf("a" to "z"), mapOf("a" to "z", "b" to "sweet")) -> true
  *   containsIn(mapOf("a" to "z"), mapOf("a" to "zee", "b" to "sweet")) -> false
  */
-fun containsIn(a: Map<String, String>, b: Map<String, String>): Boolean = TODO()
+fun containsIn(a: Map<String, String>, b: Map<String, String>): Boolean {
+    for ((key, value) in a) {
+        while (value == b[key]) return true
+    }
+    return false
+}
 
 /**
  * Средняя
@@ -130,7 +153,17 @@ fun containsIn(a: Map<String, String>, b: Map<String, String>): Boolean = TODO()
  *   averageStockPrice(listOf("MSFT" to 100.0, "MSFT" to 200.0, "NFLX" to 40.0))
  *     -> mapOf("MSFT" to 150.0, "NFLX" to 40.0)
  */
-fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Double> = TODO()
+fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Double> {
+    val res = mutableMapOf<String, MutableList<Double>>()
+    val res1 = mutableMapOf<String, Double>()
+    for ((key, value) in stockPrices) {
+        res.getOrPut(key, ::mutableListOf).add(value)
+    }
+    for ((key, value) in res) {
+        res1[key] = value.sum() / value.size
+    }
+    return res1
+}
 
 /**
  * Средняя
@@ -189,7 +222,11 @@ fun propagateHandshakes(friends: Map<String, Set<String>>): Map<String, Set<Stri
  *   subtractOf(a = mutableMapOf("a" to "z"), mapOf("a" to "z"))
  *     -> a changes to mutableMapOf() aka becomes empty
  */
-fun subtractOf(a: MutableMap<String, String>, b: Map<String, String>): Unit = TODO()
+fun subtractOf(a: MutableMap<String, String>, b: Map<String, String>) {
+    for ((key, value) in b) {
+        while (value == a[key]) a.remove(key)
+    }
+}
 
 /**
  * Простая
