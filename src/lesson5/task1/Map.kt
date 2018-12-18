@@ -120,7 +120,7 @@ fun buildGrades(grades: Map<String, Int>): Map<Int, List<String>> {
         res.getOrPut(value, ::mutableListOf).add(key)
     }
     for ((key) in res) {
-        res[key]?.sortDescending()
+        res[key]!!.sortDescending()
     }
     return res
 }
@@ -138,9 +138,9 @@ fun buildGrades(grades: Map<String, Int>): Map<Int, List<String>> {
  */
 fun containsIn(a: Map<String, String>, b: Map<String, String>): Boolean {
     for ((key, value) in a) {
-        while (value == b[key]) return true
+        if (value != b[key]) return false
     }
-    return false
+    return true
 }
 
 /**
@@ -226,7 +226,7 @@ fun propagateHandshakes(friends: Map<String, Set<String>>): Map<String, Set<Stri
  */
 fun subtractOf(a: MutableMap<String, String>, b: Map<String, String>) {
     for ((key, value) in b) {
-        while (value == a[key]) a.remove(key)
+        if (value == a[key]) a.remove(key)
     }
 }
 
@@ -246,7 +246,8 @@ fun whoAreInBoth(a: List<String>, b: List<String>): List<String> = a.toSet().int
  * Например:
  *   canBuildFrom(listOf('a', 'b', 'o'), "baobab") -> true
  */
-fun canBuildFrom(chars: List<Char>, word: String): Boolean = word.toSet().all { it in chars }
+fun canBuildFrom(chars: List<Char>, word: String): Boolean =
+        word.toLowerCase().toSet().all { it -> it in chars.map { it.toLowerCase() } }
 
 /**
  * Средняя
@@ -277,7 +278,7 @@ fun extractRepeats(list: List<String>): Map<String, Int> {
  *   hasAnagrams(listOf("тор", "свет", "рот")) -> true
  */
 fun hasAnagrams(words: List<String>): Boolean =
-        words.size != words.map { it.toSet() }.toSet().size
+        words.count() != words.map { it.toSet() }.toSet().count()
 
 /**
  * Сложная
@@ -297,8 +298,9 @@ fun hasAnagrams(words: List<String>): Boolean =
  *   findSumOfTwo(listOf(1, 2, 3), 6) -> Pair(-1, -1)
  */
 fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> {
+    if (list.isEmpty()) return Pair(-1, -1)
     for (i in 0 until list.size)
-        while ((number - list[i]) in list && (i != list.indexOf(number - list[i])))
+        if ((number - list[i]) in list && (i != list.indexOf(number - list[i])))
             return Pair(i, list.indexOf(number - list[i]))
     return Pair(-1, -1)
 }
