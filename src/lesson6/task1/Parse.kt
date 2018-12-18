@@ -120,7 +120,7 @@ fun dateDigitToStr(digital: String): String {
  * Все символы в номере, кроме цифр, пробелов и +-(), считать недопустимыми.
  * При неверном формате вернуть пустую строку
  */
-fun flattenPhoneNumber(phone: String): String =
+fun flattenPhoneNumber(phone: String): String = TODO()
 
 /**
  * Средняя
