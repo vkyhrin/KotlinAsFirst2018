@@ -128,7 +128,7 @@ fun flattenPhoneNumber(phone: String): String {
         if (i in '1'..'9') res.append(i)
         else if (i !in listOf(' ', '+', '-', '(', ')')) return ""
     }
-return res.toString()
+    return res.toString()
 }
 
 /**
@@ -175,7 +175,14 @@ fun plusMinus(expression: String): Int = TODO()
  * Вернуть индекс начала первого повторяющегося слова, или -1, если повторов нет.
  * Пример: "Он пошёл в в школу" => результат 9 (индекс первого 'в')
  */
-fun firstDuplicateIndex(str: String): Int = TODO()
+fun firstDuplicateIndex(str: String): Int {
+    val parts = str.split(" ")
+    var a = 0
+    for (i in 0 until parts.size - 1)
+        if (parts[i].toLowerCase() == parts[i + 1].toLowerCase()) return a
+        else a += parts[i].length + 1
+    return -1
+}
 
 /**
  * Сложная
